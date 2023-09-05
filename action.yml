@@ -1,0 +1,46 @@
+# action.yml
+name: "OpenTelemetry Collector Builder"
+description: "Build a custom OpenTelemetry Collector binary & container"
+inputs:
+  manifest-file:
+    description: "Path to the manifest file"
+    required: true
+    default: "manifest.yaml"
+  architecture:
+    description: "The target architecture of the output binary"
+    required: true
+    default: "amd64"
+  os:
+    description: "The target operating system of the output binary"
+    required: true
+    default: "linux"
+  container:
+    description: "The container name to publish"
+    required: false
+    default: ""
+  output-path:
+    description: "Output path"
+    required: true
+    default: "_build"
+outputs:
+  collector-file: # id of output
+    description: "The generated Collector binary"
+runs:
+  using: "composite"
+  steps:
+    - name: Custom Collector Step
+      id: custom-collector
+      uses: codeboten/collector-builder-action@main
+
+    - uses: actions/upload-artifact@v3
+      with:
+        name: otelcolaction
+        path: _build/otelcolaction
+
+    # - uses: docker/setup-buildx-action@v2
+
+    # - uses: docker/build-push-action@v4
+    #   with:
+    #     context: "{{defaultContext}}:mysubdir"
+    #     push: true
+    #     tags: user/app:latest
