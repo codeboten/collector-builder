@@ -46,5 +46,4 @@ runs:
         dockerfile: Dockerfile
         push: true
         tags: ${{ inputs.container }}
-        build-args:
-          BINARY_PATH: ${{ inputs.output-path }}/otelaction/otelcol-demo
+        build-args: "BINARY_PATH=${{ inputs.output-path }}/otelaction/otelcol-demo"
