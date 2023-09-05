@@ -37,10 +37,14 @@ runs:
         name: otelcolaction
         path: _build/otelcolaction
 
-    # - uses: docker/setup-buildx-action@v2
+    - if: ${{ inputs.container != '' }}
+      uses: docker/setup-buildx-action@v2
 
-    # - uses: docker/build-push-action@v4
-    #   with:
-    #     context: "{{defaultContext}}:mysubdir"
-    #     push: true
-    #     tags: user/app:latest
+    - if: ${{ inputs.container != '' }}
+      uses: docker/build-push-action@v4
+      with:
+        dockerfile: Dockerfile
+        push: true
+        tags: ${{ inputs.container }}
+        build-args:
+          BINARY_PATH: ${{ inputs.output-path }}/otelaction/otelcol-demo
